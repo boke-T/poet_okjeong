@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시인과의 인터뷰 - 옥정중학교</title>
+  
+  <!-- 웹 폰트 (Pretendard) 적용 -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  
+  <style>
+    /* 전체 디자인 설정 (더 세련된 배경색과 폰트 설정) */
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+    
+    h1 {
+      color: #0f172a;
+      margin-bottom: 8px;
+      font-weight: 800;
+      font-size: 2.2em;
+      letter-spacing: -0.5px;
+    }
+    
+    p.subtitle {
+      color: #64748b;
+      font-size: 1.05em;
+    }
+
+    /* 입력 폼 디자인 (부드러운 그림자와 둥근 테두리) */
+    .input-section {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
+      border: 1px solid #e2e8f0;
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+    .input-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    /* 입력창 공통 스타일 */
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 1em;
+      font-family: inherit;
+      box-sizing: border-box;
+      background-color: #f8fafc;
+      transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    select optgroup {
+      font-weight: bold;
+      color: #2563eb;
+    }
+
+    /* 채팅창 디자인 */
+    .chat-container {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-box {
+      height: 450px;
+      padding: 24px;
+      overflow-y: auto;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    /* 메시지 말풍선 (모던한 메신저 형태) */
+    .message { margin-bottom: 18px; line-height: 1.5; }
+    .message.user { text-align: right; }
+    .message.ai { text-align: left; }
+    
+    .bubble {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 18px;
+      max-width: 75%;
+      word-wrap: break-word;
+      font-size: 0.95em;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      text-align: left;
+    }
+
+    .user .bubble {
+      background-color: #3b82f6;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .ai .bubble {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      border-bottom-left-radius: 4px;
+    }
+    
+    .sender-name {
+      font-size: 0.8em;
+      color: #64748b;
+      margin-bottom: 6px;
+      display: block;
+      font-weight: 500;
+    }
+
+    /* 하단 질문 입력 영역 */
+    .input-area {
+      display: flex;
+      padding: 16px;
+      background: #f8fafc;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 2줄 텍스트 입력창 */
+    textarea#userQuestion {
+      flex-grow: 1;
+      resize: none;
+      margin-bottom: 0;
+      line-height: 1.5;
+    }
+
+    /* 세련된 버튼 */
+    .input-area button {
+      background-color: #0f172a;
+      color: white;
+      border: none;
+      padding: 0 24px;
+      height: 60px; /* 텍스트창 2줄 높이에 맞춤 */
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .input-area button:hover {
+      background-color: #334155;
+    }
+    
+    .input-area button:active {
+      transform: scale(0.97);
+    }
+
+    .input-area button:disabled {
+      background-color: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>시인과의 인터뷰</h1>
+    <p class="subtitle">한국 문학사의 거장들과 인터뷰를 해봅시다.</p>
+  </header>
+  
+  <div class="input-section">
+    <div class="input-group">
+      <label for="studentInfo">👤 학번 및 이름</label>
+      <input type="text" id="studentInfo" placeholder="예: 30100 김옥정">
+    </div>
+    
+    <div class="input-group">
+      <label for="poetSelect">📜 인터뷰할 시인 선택</label>
+      <select id="poetSelect">
+        <option value="" disabled selected>시인을 선택해주세요</option>
+        
+        <optgroup label="1. 일제강점기 (1920~1940년대)">
+          <option value="윤동주">윤동주 (서시, 별 헤는 밤)</option>
+          <option value="이육사">이육사 (청포도, 광야)</option>
+          <option value="백석">백석 (남신의주 유동 박시봉방)</option>
+          <option value="김소월">김소월 (진달래꽃, 먼 후일)</option>
+          <option value="한용운">한용운 (님의 침묵)</option>
+        </optgroup>
+        
+        <optgroup label="2. 광복 직후 및 1950년대 (전후 문학)">
+          <option value="김춘수">김춘수 (꽃)</option>
+          <option value="박인환">박인환 (목마와 숙녀)</option>
+          <option value="구상">구상 (초토의 시)</option>
+          <option value="조지훈">조지훈 (낙화, 승무)</option>
+          <option value="김남조">김남조 (겨울 바다)</option>
+        </optgroup>
+        
+        <optgroup label="3. 1960년대 (참여 문학과 서정)">
+          <option value="김수영">김수영 (풀, 눈)</option>
+          <option value="신동엽">신동엽 (껍데기는 가라)</option>
+          <option value="박목월">박목월 (하관, 나그네)</option>
+          <option value="김종삼">김종삼 (누군가 나에게 물었다)</option>
+          <option value="황동규">황동규 (즐거운 편지)</option>
+        </optgroup>
+
+        <optgroup label="4. 1970년대 (산업화와 민중)">
+          <option value="신경림">신경림 (농무)</option>
+          <option value="정희성">정희성 (저문 강에 삽을 씻고)</option>
+          <option value="이성부">이성부 (벼)</option>
+          <option value="김지하">김지하 (타는 목마름으로)</option>
+          <option value="이형기">이형기 (낙화)</option>
+        </optgroup>
+
+        <optgroup label="5. 1980년대 이후 (현대 문학)">
+          <option value="기형도">기형도 (빈집, 엄마 걱정)</option>
+          <option value="정호승">정호승 (슬픔이 기쁨에게)</option>
+          <option value="안도현">안도현 (너에게 묻는다)</option>
+          <option value="황지우">황지우 (새들도 세상을 뜨는구나)</option>
+          <option value="최승호">최승호 (대설주의보)</option>
+        </optgroup>
+      </select>
+    </div>
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-box" id="chatBox">
+      <!-- 채팅 메시지가 여기에 나타납니다 -->
+      <div class="message ai">
+        <span class="sender-name">시스템 알림</span>
+        <div class="bubble">학번/이름과 인터뷰할 시인을 선택한 후 질문을 남겨주세요.</div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <!-- 입력창이 2줄(rows="2")로 변경되었습니다 -->
+      <textarea id="userQuestion" rows="2" placeholder="시인에게 궁금한 점을 질문해 보세요..." onkeydown="handleKeyPress(event)"></textarea>
+      <button id="sendBtn" onclick="sendQuestion()">질문하기</button>
+    </div>
+  </div>
+
+  <script>
+    // 선생님의 기존 웹앱 URL 유지
+    const GAS_URL="https://script.google.com/macros/s/AKfycbxYNW9Z2KpoRFc96c9bwdV8y7SFKXUgFhZmZtftnRZ9uoTSW11fb2MNxxj3B9jNQn8o/exec";
+
+    // 텍스트 영역(2줄)에서 Enter 키를 누르면 줄바꿈 대신 전송되도록 설정 (Shift+Enter는 줄바꿈)
+    function handleKeyPress(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault(); // 기본 줄바꿈 방지
+        sendQuestion();
+      }
+    }
+
+    async function sendQuestion() {
+      const studentInfo = document.getElementById('studentInfo').value;
+      const poet = document.getElementById('poetSelect').value;
+      const questionInput = document.getElementById('userQuestion');
+      const question = questionInput.value;
+      const sendBtn = document.getElementById('sendBtn');
+
+      // 입력값 검증
+      if (!studentInfo) { alert("학번과 이름을 입력해주세요."); return; }
+
+      // 처음 시작이 숫자 5자리인지 검사
+      const studentRegex = /^\d{5}/; 
+      if (!studentRegex.test(studentInfo.trim())) {
+        // 알림 메시지도 '30100 김옥정'으로 수정 완료
+        alert("학번 형식이 올바르지 않습니다.\n반드시 숫자 5자리로 시작하게 입력해주세요. (예: 30100 김옥정)");
+        document.getElementById('studentInfo').focus();
+        return;
+      }
+
+      if (!poet) { alert("인터뷰할 시인을 선택해주세요."); return; }
+      if (!question.trim()) { alert("질문을 입력해주세요."); return; }
+      
+      const chatBox = document.getElementById('chatBox');
+      
+      // 사용자 질문 화면에 표시 (줄바꿈이 화면에 잘 보이도록 replace 처리)
+      const formattedQuestion = question.replace(/\n/g, '<br>');
+      chatBox.innerHTML += `
+        <div class="message user">
+          <span class="sender-name">${studentInfo}</span>
+          <div class="bubble">${formattedQuestion}</div>
+        </div>
+      `;
+      
+      // 입력창 초기화 및 버튼 비활성화
+      questionInput.value = '';
+      sendBtn.disabled = true;
+      sendBtn.innerText = '답변 중...';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        // Apps Script로 데이터 전송
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            studentInfo: studentInfo,
+            poet: poet,
+            userQuestion: question
+          })
+        });
+
+        const result = await response.json();
+        
+        // AI 답변 화면에 표시 (AI 답변 줄바꿈 반영)
+        const formattedAnswer = result.answer.replace(/\n/g, '<br>');
+        chatBox.innerHTML += `
+          <div class="message ai">
+            <span class="sender-name">${poet} 시인</span>
+            <div class="bubble">${formattedAnswer}</div>
+          </div>
+        `;
+      } catch (error) {
+        chatBox.innerHTML += `
+          <div class="message ai">
+            <span class="sender-name">시스템 오류</span>
+            <div class="bubble" style="background-color: #fee2e2; color: #991b1b;">통신 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</div>
+          </div>
+        `;
+      } finally {
+        // 버튼 활성화 및 스크롤 맨 아래로 이동
+        sendBtn.disabled = false;
+        sendBtn.innerText = '질문하기';
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    }
+  </script>
+</body>
+</html>
