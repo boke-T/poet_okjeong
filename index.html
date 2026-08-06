@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>시인과의 인터뷰 - 옥정중학교</title>
   
-  <!-- 웹 폰트 (Pretendard) 적용 -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   
   <style>
-    /* 전체 디자인 설정 */
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
       background-color: #f8fafc;
@@ -20,25 +18,10 @@
       line-height: 1.6;
     }
     
-    header {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-    
-    h1 {
-      color: #0f172a;
-      margin-bottom: 8px;
-      font-weight: 800;
-      font-size: 2.2em;
-      letter-spacing: -0.5px;
-    }
-    
-    p.subtitle {
-      color: #64748b;
-      font-size: 1.05em;
-    }
+    header { text-align: center; margin-bottom: 35px; }
+    h1 { color: #0f172a; margin-bottom: 8px; font-weight: 800; font-size: 2.2em; letter-spacing: -0.5px; }
+    p.subtitle { color: #64748b; font-size: 1.05em; }
 
-    /* 입력 폼 디자인 */
     .input-section {
       background: #ffffff;
       padding: 24px;
@@ -48,161 +31,68 @@
       margin-bottom: 25px;
     }
 
-    .input-group {
-      margin-bottom: 18px;
-    }
-    .input-group:last-child {
-      margin-bottom: 0;
-    }
+    .input-group { margin-bottom: 18px; }
+    .input-group:last-child { margin-bottom: 0; }
+    .input-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #334155; }
 
-    .input-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #334155;
-    }
-
-    /* 입력창 공통 스타일 */
     input[type="text"], select, textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 1em;
-      font-family: inherit;
-      box-sizing: border-box;
-      background-color: #f8fafc;
-      transition: all 0.2s ease;
+      width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 10px;
+      font-size: 1em; font-family: inherit; box-sizing: border-box; background-color: #f8fafc; transition: all 0.2s ease;
     }
-
     input[type="text"]:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #3b82f6;
-      background-color: #ffffff;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+      outline: none; border-color: #3b82f6; background-color: #ffffff; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
+    select optgroup { font-weight: bold; color: #2563eb; }
+    
+    #customPoetInput { display: none; margin-top: 10px; animation: fadeIn 0.3s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-    select optgroup {
-      font-weight: bold;
-      color: #2563eb;
+    .chat-container {
+      background: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
+      border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;
     }
     
-    /* 직접 입력 칸 전환 애니메이션 효과 */
-    #customPoetInput {
-      display: none; 
-      margin-top: 10px;
-      animation: fadeIn 0.3s ease-in-out;
+    /* ★ 상단 툴바(저장 버튼) 추가 */
+    .chat-toolbar {
+      display: flex; justify-content: flex-end; padding: 10px 20px; background-color: #f1f5f9; border-bottom: 1px solid #e2e8f0;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-5px); }
-      to { opacity: 1; transform: translateY(0); }
+    .export-btn {
+      background-color: #ffffff; color: #334155; border: 1px solid #cbd5e1; padding: 6px 12px;
+      border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.2s;
     }
-
-    /* 채팅창 디자인 */
-    .chat-container {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
-      border: 1px solid #e2e8f0;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
+    .export-btn:hover { background-color: #e2e8f0; }
 
     .chat-box {
-      height: 450px;
-      padding: 24px;
-      overflow-y: auto;
-      background-color: #ffffff;
-      border-bottom: 1px solid #e2e8f0;
+      height: 450px; padding: 24px; overflow-y: auto; background-color: #ffffff; border-bottom: 1px solid #e2e8f0;
     }
 
-    /* 메시지 말풍선 */
     .message { margin-bottom: 18px; line-height: 1.5; }
     .message.user { text-align: right; }
     .message.ai { text-align: left; }
     
     .bubble {
-      display: inline-block;
-      padding: 12px 18px;
-      border-radius: 18px;
-      max-width: 75%;
-      word-wrap: break-word;
-      font-size: 0.95em;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-      text-align: left;
+      display: inline-block; padding: 12px 18px; border-radius: 18px; max-width: 75%;
+      word-wrap: break-word; font-size: 0.95em; box-shadow: 0 2px 4px rgba(0,0,0,0.02); text-align: left;
     }
+    .user .bubble { background-color: #3b82f6; color: white; border-bottom-right-radius: 4px; }
+    .ai .bubble { background-color: #f1f5f9; color: #1e293b; border-bottom-left-radius: 4px; }
+    .sender-name { font-size: 0.8em; color: #64748b; margin-bottom: 6px; display: block; font-weight: 500; }
 
-    .user .bubble {
-      background-color: #3b82f6;
-      color: white;
-      border-bottom-right-radius: 4px;
-    }
-
-    .ai .bubble {
-      background-color: #f1f5f9;
-      color: #1e293b;
-      border-bottom-left-radius: 4px;
-    }
-    
-    .sender-name {
-      font-size: 0.8em;
-      color: #64748b;
-      margin-bottom: 6px;
-      display: block;
-      font-weight: 500;
-    }
-
-    /* 하단 질문 입력 영역 */
-    .input-area {
-      display: flex;
-      padding: 16px;
-      background: #f8fafc;
-      align-items: center;
-      gap: 12px;
-    }
-
-    textarea#userQuestion {
-      flex-grow: 1;
-      resize: none;
-      margin-bottom: 0;
-      line-height: 1.5;
-    }
-
+    .input-area { display: flex; padding: 16px; background: #f8fafc; align-items: center; gap: 12px; }
+    textarea#userQuestion { flex-grow: 1; resize: none; margin-bottom: 0; line-height: 1.5; }
     .input-area button {
-      background-color: #0f172a;
-      color: white;
-      border: none;
-      padding: 0 24px;
-      height: 60px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background-color 0.2s, transform 0.1s;
-      white-space: nowrap;
+      background-color: #0f172a; color: white; border: none; padding: 0 24px; height: 60px;
+      border-radius: 10px; font-weight: 600; font-size: 1em; cursor: pointer; transition: background-color 0.2s, transform 0.1s; white-space: nowrap;
     }
-
-    .input-area button:hover {
-      background-color: #334155;
-    }
-    
-    .input-area button:active {
-      transform: scale(0.97);
-    }
-
-    .input-area button:disabled {
-      background-color: #94a3b8;
-      cursor: not-allowed;
-      transform: none;
-    }
+    .input-area button:hover { background-color: #334155; }
+    .input-area button:active { transform: scale(0.97); }
+    .input-area button:disabled { background-color: #94a3b8; cursor: not-allowed; transform: none; }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>시대를 건너온 목소리, 시인과의 대화</h1>
+    <h1>시대를 건너온 목소리, 시인과의 대화 ✉️</h1>
     <p class="subtitle">시는 시인이 자신이 살아가는 세계에 응답하는 방식이자 치열한 고백입니다. 멀게만 느껴졌던 문학사 속 거장들을 이 자리에 초대했습니다. 시공간을 넘어, 그들이 시를 통해 어떤 세계를 꿈꾸었는지 직접 귀 기울여 볼까요?</p>
   </header>
   
@@ -214,60 +104,60 @@
     
     <div class="input-group">
       <label for="poetSelect">📜 인터뷰할 시인 선택</label>
-      <!-- ★ 변경점: onchange 이벤트를 추가하여 선택 항목이 바뀔 때 함수를 실행합니다. -->
       <select id="poetSelect" onchange="toggleCustomInput()">
         <option value="" disabled selected>시인을 선택해주세요</option>
-        
-        <!-- ★ 추가된 항목: 직접 입력 -->
         <option value="custom">✍️ 직접 입력하기 (목록에 없는 시인)</option>
         
         <optgroup label="1. 일제강점기 (1920~1940년대)">
-          <option value="윤동주">윤동주 (서시, 별 헤는 밤)</option>
-          <option value="이육사">이육사 (청포도, 광야)</option>
-          <option value="백석">백석 (남신의주 유동 박시봉방)</option>
-          <option value="김소월">김소월 (진달래꽃, 먼 후일)</option>
-          <option value="한용운">한용운 (님의 침묵)</option>
+          <option value="윤동주">윤동주</option>
+          <option value="이육사">이육사</option>
+          <option value="백석">백석</option>
+          <option value="김소월">김소월</option>
+          <option value="한용운">한용운</option>
         </optgroup>
         
         <optgroup label="2. 광복 직후 및 1950년대 (전후 문학)">
-          <option value="김춘수">김춘수 (꽃)</option>
-          <option value="박인환">박인환 (목마와 숙녀)</option>
-          <option value="구상">구상 (초토의 시)</option>
-          <option value="조지훈">조지훈 (낙화, 승무)</option>
-          <option value="김남조">김남조 (겨울 바다)</option>
+          <option value="김춘수">김춘수</option>
+          <option value="박인환">박인환</option>
+          <option value="구상">구상</option>
+          <option value="조지훈">조지훈</option>
+          <option value="김남조">김남조</option>
         </optgroup>
         
         <optgroup label="3. 1960년대 (참여 문학과 서정)">
-          <option value="김수영">김수영 (풀, 눈)</option>
-          <option value="신동엽">신동엽 (껍데기는 가라)</option>
-          <option value="박목월">박목월 (하관, 나그네)</option>
-          <option value="김종삼">김종삼 (누군가 나에게 물었다)</option>
-          <option value="황동규">황동규 (즐거운 편지)</option>
+          <option value="김수영">김수영</option>
+          <option value="신동엽">신동엽</option>
+          <option value="박목월">박목월</option>
+          <option value="김종삼">김종삼</option>
+          <option value="황동규">황동규</option>
         </optgroup>
 
         <optgroup label="4. 1970년대 (산업화와 민중)">
-          <option value="신경림">신경림 (농무)</option>
-          <option value="정희성">정희성 (저문 강에 삽을 씻고)</option>
-          <option value="이성부">이성부 (벼)</option>
-          <option value="김지하">김지하 (타는 목마름으로)</option>
-          <option value="이형기">이형기 (낙화)</option>
+          <option value="신경림">신경림</option>
+          <option value="정희성">정희성</option>
+          <option value="이성부">이성부</option>
+          <option value="김지하">김지하</option>
+          <option value="이형기">이형기</option>
         </optgroup>
 
         <optgroup label="5. 1980년대 이후 (현대 문학)">
-          <option value="기형도">기형도 (빈집, 엄마 걱정)</option>
-          <option value="정호승">정호승 (슬픔이 기쁨에게)</option>
-          <option value="안도현">안도현 (너에게 묻는다)</option>
-          <option value="황지우">황지우 (새들도 세상을 뜨는구나)</option>
-          <option value="최승호">최승호 (대설주의보)</option>
+          <option value="기형도">기형도</option>
+          <option value="정호승">정호승</option>
+          <option value="안도현">안도현</option>
+          <option value="황지우">황지우</option>
+          <option value="최승호">최승호</option>
         </optgroup>
       </select>
-      
-      <!-- ★ 추가된 항목: 직접 입력창 (기본 상태는 숨김(display:none)) -->
       <input type="text" id="customPoetInput" placeholder="인터뷰할 시인의 이름을 정확히 적어주세요 (예: 이상)">
     </div>
   </div>
 
   <div class="chat-container">
+    <!-- ★ 대화 기록 내보내기 툴바 추가 -->
+    <div class="chat-toolbar">
+      <button class="export-btn" onclick="exportChat()">💾 대화 기록 텍스트로 저장</button>
+    </div>
+
     <div class="chat-box" id="chatBox">
       <div class="message ai">
         <span class="sender-name">시스템 알림</span>
@@ -282,10 +172,8 @@
   </div>
 
   <script>
-    // 선생님의 기존 웹앱 URL 유지
     const GAS_URL="https://script.google.com/macros/s/AKfycbxYNW9Z2KpoRFc96c9bwdV8y7SFKXUgFhZmZtftnRZ9uoTSW11fb2MNxxj3B9jNQn8o/exec";
 
-    // 엔터 키 동작 설정
     function handleKeyPress(event) {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault(); 
@@ -293,18 +181,49 @@
       }
     }
 
-    // ★ 추가된 함수: '직접 입력' 선택 시 숨겨진 입력창을 보여줍니다.
     function toggleCustomInput() {
       const select = document.getElementById('poetSelect');
       const customInput = document.getElementById('customPoetInput');
       
       if (select.value === 'custom') {
-        customInput.style.display = 'block'; // 입력창 보이기
-        customInput.focus(); // 입력창에 바로 커서 이동
+        customInput.style.display = 'block';
+        customInput.focus();
       } else {
-        customInput.style.display = 'none'; // 입력창 숨기기
-        customInput.value = ''; // 다른 시인 선택 시 직접입력 칸 초기화
+        customInput.style.display = 'none';
+        customInput.value = '';
       }
+    }
+
+    // ★ 대화 기록을 텍스트 파일로 내보내는 기능 추가
+    function exportChat() {
+      const chatBox = document.getElementById('chatBox');
+      const messages = chatBox.querySelectorAll('.message');
+      const studentInfo = document.getElementById('studentInfo').value || "작성자미상";
+      
+      let exportText = `=== 시인과의 인터뷰 기록 ===\n`;
+      exportText += `▶ 학번/이름: ${studentInfo}\n`;
+      exportText += `▶ 일시: ${new Date().toLocaleString('ko-KR')}\n`;
+      exportText += `==============================\n\n`;
+
+      messages.forEach(msg => {
+        const sender = msg.querySelector('.sender-name').innerText;
+        // 시스템 알림은 제외하고 내보내기
+        if (sender !== '시스템 알림') {
+          const text = msg.querySelector('.bubble').innerText;
+          exportText += `[${sender}]\n${text}\n\n`;
+        }
+      });
+
+      // 텍스트 파일 생성 및 다운로드 트리거
+      const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `인터뷰기록_${studentInfo}.txt`; // 파일명: 인터뷰기록_30100김옥정.txt
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
     async function sendQuestion() {
@@ -314,11 +233,9 @@
       const sendBtn = document.getElementById('sendBtn');
       const selectValue = document.getElementById('poetSelect').value;
       
-      // ★ 시인 이름 결정 로직 추가
       let finalPoetName = "";
       
       if (selectValue === 'custom') {
-        // 직접 입력을 선택했을 경우
         finalPoetName = document.getElementById('customPoetInput').value.trim();
         if (!finalPoetName) {
           alert("인터뷰할 시인의 이름을 직접 입력해주세요.");
@@ -326,13 +243,10 @@
           return;
         }
       } else {
-        // 목록에서 선택했을 경우
         finalPoetName = selectValue;
       }
 
-      // 입력값 검증
       if (!studentInfo) { alert("학번과 이름을 입력해주세요."); return; }
-
       const studentRegex = /^\d{5}/; 
       if (!studentRegex.test(studentInfo.trim())) {
         alert("학번 형식이 올바르지 않습니다.\n반드시 숫자 5자리로 시작하게 입력해주세요. (예: 30100 김옥정)");
@@ -344,8 +258,8 @@
       if (!question.trim()) { alert("질문을 입력해주세요."); return; }
       
       const chatBox = document.getElementById('chatBox');
-      
       const formattedQuestion = question.replace(/\n/g, '<br>');
+      
       chatBox.innerHTML += `
         <div class="message user">
           <span class="sender-name">${studentInfo}</span>
@@ -363,14 +277,14 @@
           method: 'POST',
           body: JSON.stringify({
             studentInfo: studentInfo,
-            poet: finalPoetName, // ★ 결정된 시인 이름(직접 입력 또는 선택)을 백엔드로 전송
+            poet: finalPoetName,
             userQuestion: question
           })
         });
 
         const result = await response.json();
-        
         const formattedAnswer = result.answer.replace(/\n/g, '<br>');
+        
         chatBox.innerHTML += `
           <div class="message ai">
             <span class="sender-name">${finalPoetName} 시인</span>
