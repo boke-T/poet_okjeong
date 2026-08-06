@@ -9,7 +9,7 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   
   <style>
-    /* 전체 디자인 설정 (더 세련된 배경색과 폰트 설정) */
+    /* 전체 디자인 설정 */
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
       background-color: #f8fafc;
@@ -38,7 +38,7 @@
       font-size: 1.05em;
     }
 
-    /* 입력 폼 디자인 (부드러운 그림자와 둥근 테두리) */
+    /* 입력 폼 디자인 */
     .input-section {
       background: #ffffff;
       padding: 24px;
@@ -86,6 +86,18 @@
       font-weight: bold;
       color: #2563eb;
     }
+    
+    /* 직접 입력 칸 전환 애니메이션 효과 */
+    #customPoetInput {
+      display: none; 
+      margin-top: 10px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     /* 채팅창 디자인 */
     .chat-container {
@@ -106,7 +118,7 @@
       border-bottom: 1px solid #e2e8f0;
     }
 
-    /* 메시지 말풍선 (모던한 메신저 형태) */
+    /* 메시지 말풍선 */
     .message { margin-bottom: 18px; line-height: 1.5; }
     .message.user { text-align: right; }
     .message.ai { text-align: left; }
@@ -151,7 +163,6 @@
       gap: 12px;
     }
 
-    /* 2줄 텍스트 입력창 */
     textarea#userQuestion {
       flex-grow: 1;
       resize: none;
@@ -159,13 +170,12 @@
       line-height: 1.5;
     }
 
-    /* 세련된 버튼 */
     .input-area button {
       background-color: #0f172a;
       color: white;
       border: none;
       padding: 0 24px;
-      height: 60px; /* 텍스트창 2줄 높이에 맞춤 */
+      height: 60px;
       border-radius: 10px;
       font-weight: 600;
       font-size: 1em;
@@ -192,8 +202,8 @@
 <body>
 
   <header>
-    <h1>시인과 대화하기(인터뷰)</h1>
-    <p class="subtitle">시인은 시를 통해 올바르게 바라보거나, 새로운 세계를 꿈꾸는 모습도 보이지만, 결국은 자신이 살아가고 있는 세계에 대한 반응입니다. 이제 여러분이 직접 시인과 만나 그들의 이야기를 들어봅시다.</p>
+    <h1>시대를 건너온 목소리, 시인과의 대화</h1>
+    <p class="subtitle">시는 시인이 자신이 살아가는 세계에 응답하는 방식이자 치열한 고백입니다. 멀게만 느껴졌던 문학사 속 거장들을 이 자리에 초대했습니다. 시공간을 넘어, 그들이 시를 통해 어떤 세계를 꿈꾸었는지 직접 귀 기울여 볼까요?</p>
   </header>
   
   <div class="input-section">
@@ -204,8 +214,12 @@
     
     <div class="input-group">
       <label for="poetSelect">📜 인터뷰할 시인 선택</label>
-      <select id="poetSelect">
+      <!-- ★ 변경점: onchange 이벤트를 추가하여 선택 항목이 바뀔 때 함수를 실행합니다. -->
+      <select id="poetSelect" onchange="toggleCustomInput()">
         <option value="" disabled selected>시인을 선택해주세요</option>
+        
+        <!-- ★ 추가된 항목: 직접 입력 -->
+        <option value="custom">✍️ 직접 입력하기 (목록에 없는 시인)</option>
         
         <optgroup label="1. 일제강점기 (1920~1940년대)">
           <option value="윤동주">윤동주 (서시, 별 헤는 밤)</option>
@@ -247,12 +261,14 @@
           <option value="최승호">최승호 (대설주의보)</option>
         </optgroup>
       </select>
+      
+      <!-- ★ 추가된 항목: 직접 입력창 (기본 상태는 숨김(display:none)) -->
+      <input type="text" id="customPoetInput" placeholder="인터뷰할 시인의 이름을 정확히 적어주세요 (예: 이상)">
     </div>
   </div>
 
   <div class="chat-container">
     <div class="chat-box" id="chatBox">
-      <!-- 채팅 메시지가 여기에 나타납니다 -->
       <div class="message ai">
         <span class="sender-name">시스템 알림</span>
         <div class="bubble">학번/이름과 인터뷰할 시인을 선택한 후 질문을 남겨주세요.</div>
@@ -260,7 +276,6 @@
     </div>
 
     <div class="input-area">
-      <!-- 입력창이 2줄(rows="2")로 변경되었습니다 -->
       <textarea id="userQuestion" rows="2" placeholder="시인에게 궁금한 점을 질문해 보세요..." onkeydown="handleKeyPress(event)"></textarea>
       <button id="sendBtn" onclick="sendQuestion()">질문하기</button>
     </div>
@@ -270,39 +285,66 @@
     // 선생님의 기존 웹앱 URL 유지
     const GAS_URL="https://script.google.com/macros/s/AKfycbxYNW9Z2KpoRFc96c9bwdV8y7SFKXUgFhZmZtftnRZ9uoTSW11fb2MNxxj3B9jNQn8o/exec";
 
-    // 텍스트 영역(2줄)에서 Enter 키를 누르면 줄바꿈 대신 전송되도록 설정 (Shift+Enter는 줄바꿈)
+    // 엔터 키 동작 설정
     function handleKeyPress(event) {
       if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault(); // 기본 줄바꿈 방지
+        event.preventDefault(); 
         sendQuestion();
+      }
+    }
+
+    // ★ 추가된 함수: '직접 입력' 선택 시 숨겨진 입력창을 보여줍니다.
+    function toggleCustomInput() {
+      const select = document.getElementById('poetSelect');
+      const customInput = document.getElementById('customPoetInput');
+      
+      if (select.value === 'custom') {
+        customInput.style.display = 'block'; // 입력창 보이기
+        customInput.focus(); // 입력창에 바로 커서 이동
+      } else {
+        customInput.style.display = 'none'; // 입력창 숨기기
+        customInput.value = ''; // 다른 시인 선택 시 직접입력 칸 초기화
       }
     }
 
     async function sendQuestion() {
       const studentInfo = document.getElementById('studentInfo').value;
-      const poet = document.getElementById('poetSelect').value;
       const questionInput = document.getElementById('userQuestion');
       const question = questionInput.value;
       const sendBtn = document.getElementById('sendBtn');
+      const selectValue = document.getElementById('poetSelect').value;
+      
+      // ★ 시인 이름 결정 로직 추가
+      let finalPoetName = "";
+      
+      if (selectValue === 'custom') {
+        // 직접 입력을 선택했을 경우
+        finalPoetName = document.getElementById('customPoetInput').value.trim();
+        if (!finalPoetName) {
+          alert("인터뷰할 시인의 이름을 직접 입력해주세요.");
+          document.getElementById('customPoetInput').focus();
+          return;
+        }
+      } else {
+        // 목록에서 선택했을 경우
+        finalPoetName = selectValue;
+      }
 
       // 입력값 검증
       if (!studentInfo) { alert("학번과 이름을 입력해주세요."); return; }
 
-      // 처음 시작이 숫자 5자리인지 검사
       const studentRegex = /^\d{5}/; 
       if (!studentRegex.test(studentInfo.trim())) {
-        // 알림 메시지도 '30100 김옥정'으로 수정 완료
         alert("학번 형식이 올바르지 않습니다.\n반드시 숫자 5자리로 시작하게 입력해주세요. (예: 30100 김옥정)");
         document.getElementById('studentInfo').focus();
         return;
       }
 
-      if (!poet) { alert("인터뷰할 시인을 선택해주세요."); return; }
+      if (!finalPoetName) { alert("인터뷰할 시인을 선택해주세요."); return; }
       if (!question.trim()) { alert("질문을 입력해주세요."); return; }
       
       const chatBox = document.getElementById('chatBox');
       
-      // 사용자 질문 화면에 표시 (줄바꿈이 화면에 잘 보이도록 replace 처리)
       const formattedQuestion = question.replace(/\n/g, '<br>');
       chatBox.innerHTML += `
         <div class="message user">
@@ -311,30 +353,27 @@
         </div>
       `;
       
-      // 입력창 초기화 및 버튼 비활성화
       questionInput.value = '';
       sendBtn.disabled = true;
       sendBtn.innerText = '답변 중...';
       chatBox.scrollTop = chatBox.scrollHeight;
 
       try {
-        // Apps Script로 데이터 전송
         const response = await fetch(GAS_URL, {
           method: 'POST',
           body: JSON.stringify({
             studentInfo: studentInfo,
-            poet: poet,
+            poet: finalPoetName, // ★ 결정된 시인 이름(직접 입력 또는 선택)을 백엔드로 전송
             userQuestion: question
           })
         });
 
         const result = await response.json();
         
-        // AI 답변 화면에 표시 (AI 답변 줄바꿈 반영)
         const formattedAnswer = result.answer.replace(/\n/g, '<br>');
         chatBox.innerHTML += `
           <div class="message ai">
-            <span class="sender-name">${poet} 시인</span>
+            <span class="sender-name">${finalPoetName} 시인</span>
             <div class="bubble">${formattedAnswer}</div>
           </div>
         `;
@@ -346,7 +385,6 @@
           </div>
         `;
       } finally {
-        // 버튼 활성화 및 스크롤 맨 아래로 이동
         sendBtn.disabled = false;
         sendBtn.innerText = '질문하기';
         chatBox.scrollTop = chatBox.scrollHeight;
